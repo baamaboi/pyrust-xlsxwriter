@@ -1,0 +1,70 @@
+[build-system]
+build-backend = "maturin"
+requires = ["maturin>=1.13,<2"]
+
+[project]
+name = "pyrust-xlsxwriter"
+requires-python = ">=3.14"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Programming Language :: Rust",
+]
+dynamic = ["version"]
+
+[dependency-groups]
+dev = ["pyrefly>=1.2", "ruff>=0.16.2"]
+
+[tool.maturin]
+module-name = "pyrust_xlsxwriter._pyrust_xlsxwriter"
+bindings = "pyo3"
+python-source = "python"
+generate-type-stubs = true
+
+[tool.ruff]
+target-version = "py314"
+line-length = 120
+src = ["python"]
+format.indent-style = "space"
+format.quote-style = "double"
+format.skip-magic-trailing-comma = false
+format.docstring-code-format = true
+lint.select = [
+  "ANN", # flake8-annotations (strict type hints)
+  "ARG", # flake8-unused-arguments
+  "B",   # flake8-bugbear (common bug patterns & design flaws)
+  "C4",  # flake8-comprehensions
+  "E",   # pycodestyle errors
+  "F",   # Pyflakes
+  "I",   # isort (import sorting)
+  "PTH", # flake8-use-pathlib
+  "RUF", # Ruff-specific rules
+  "S",   # flake8-bandit (security checks)
+  "SIM", # flake8-simplify
+  "UP",  # pyupgrade (modernize syntax)
+  "W",   # pycodestyle warnings
+]
+lint.ignore = [
+  "ANN401", # Dynamically typed expressions (`Any`) - optional, uncomment if `Any` is allowed
+  "E501",   # Line length violations (handled by formatter)
+  "SIM108", # Force ternary operators
+]
+lint.per-file-ignores."python/pyrust_xlsxwriter/__init__.py" = [
+  "F401", # Allow unused imports (re-exporting public API)
+  "F403", # Allow star imports from C extension
+  "F405", # Allow star import member usage
+]
+lint.per-file-ignores."tests/**/*" = [
+  "ANN",    # Suppress strict type hint enforcement inside test suites
+  "ARG001", # Allow unused arguments (Pytest fixtures)
+  "PTH",    # Allow standard paths in tests
+  "S101",   # Allow `assert` statements in tests
+  "S105",   # Allow hardcoded pseudo-passwords/tokens in test datasets
+  "S106",   # Allow hardcoded passwords in function call arguments in tests
+]
+lint.fixable = ["ALL"]
+
+[tool.pyrefly]
+project-includes = ["**/*.py*", "**/*.ipynb"]
