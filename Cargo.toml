@@ -6,15 +6,36 @@ edition = "2024"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
 name = "_pyrust_xlsxwriter"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-num-bigint = "0.4.6"
+# Python bindings. `multiple-pymethods` lets each feature area add its own
+# `#[pymethods] impl Worksheet` block in its own file.
 pyo3 = { version = "0.28.3", features = [
-    "num-bigint",
+    "chrono",
     "rust_decimal",
-    "serde",
+    "multiple-pymethods",
 ] }
+# Writer engine.
+rust_xlsxwriter = { version = "0.103.0", features = [
+    "chrono",
+    "constant_memory",
+    "rust_decimal",
+    "ryu",
+] }
+# Reader engine.
+calamine = { version = "0.38.0", features = ["dates", "picture"] }
+# Editor engine (versions match the ones calamine/rust_xlsxwriter already use).
+quick-xml = "0.42"
+zip = { version = "9.0", default-features = false, features = ["deflate"] }
+
+chrono = "0.4"
+paste = "1.0"
 rust_decimal = "1.42.0"
-rust_xlsxwriter = { version = "0.95.0", features = ["rust_decimal", "serde"] }
-serde = { version = "1.0.228", features = ["derive"] }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+# Turn integer overflow inside dependencies into a catchable error (reported to
+# Python as ParameterError) instead of silently wrapping around.
+overflow-checks = true

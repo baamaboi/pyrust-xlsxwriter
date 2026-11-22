@@ -63,3 +63,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+---
+
+## 3. calamine
+
+- **Source**: https://github.com/tafia/calamine
+- **Authors**: Johann Tuffe and calamine contributors
+- **License**: MIT
+
+---
+
+## 4. Other Rust dependencies compiled into the extension
+
+| Crate | Source | License |
+|---|---|---|
+| zip | https://github.com/zip-rs/zip2 | MIT |
+| quick-xml | https://github.com/tafia/quick-xml | MIT |
+| chrono | https://github.com/chronotope/chrono | MIT OR Apache-2.0 |
+| rust_decimal | https://github.com/paupino/rust-decimal | MIT |
+| paste | https://github.com/dtolnay/paste | MIT OR Apache-2.0 |
+
+The MIT License text above applies to each of these with their respective
+copyright holders.
+
+---
+
+## 5. Test corpus (not distributed in the package)
+
+`tests/corpus/` contains Excel-made reference files from rust_xlsxwriter's test
+suite (Copyright John McNamara, MIT license; see `tests/corpus/LICENSE_MIT`).

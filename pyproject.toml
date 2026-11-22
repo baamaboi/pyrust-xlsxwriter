@@ -15,7 +15,14 @@ classifiers = [
 dynamic = ["version"]
 
 [dependency-groups]
-dev = ["pyrefly>=1.2", "ruff>=0.16.2"]
+dev = [
+  "maturin>=1.16.0",
+  "mypy>=2.4.1",
+  "openpyxl>=3.1.5",
+  "pyrefly>=1.2",
+  "pytest>=9.2.0",
+  "ruff>=0.16.2",
+]
 
 [tool.maturin]
 module-name = "pyrust_xlsxwriter._pyrust_xlsxwriter"
@@ -51,6 +58,10 @@ lint.ignore = [
   "E501",   # Line length violations (handled by formatter)
   "SIM108", # Force ternary operators
 ]
+lint.per-file-ignores."python/pyrust_xlsxwriter/__init__.pyi" = [
+  "F401", # Re-exports
+  "F403", # Star import from the extension stub
+]
 lint.per-file-ignores."python/pyrust_xlsxwriter/__init__.py" = [
   "F401", # Allow unused imports (re-exporting public API)
   "F403", # Allow star imports from C extension
@@ -63,8 +74,30 @@ lint.per-file-ignores."tests/**/*" = [
   "S101",   # Allow `assert` statements in tests
   "S105",   # Allow hardcoded pseudo-passwords/tokens in test datasets
   "S106",   # Allow hardcoded passwords in function call arguments in tests
+  "S314",   # The structural validator parses XML the tests themselves produced
+  "S603",   # Running mypy stubtest and pyrefly
+  "E402",   # Test helpers are imported after adjusting sys.path
+  "RUF043", # Regex metacharacters in pytest.raises(match=...) are intended
+  "B905",   # zip() over equal-length test data
+]
+lint.per-file-ignores."benchmarks/**/*" = [
+  "S314", # Parsing the packages being measured
+  "S603", # Running engines in subprocesses
+  "E402", # Importing the validator after adjusting sys.path
+  "T201", # Benchmarks print their results
 ]
 lint.fixable = ["ALL"]
 
 [tool.pyrefly]
 project-includes = ["**/*.py*", "**/*.ipynb"]
+# Tests and benchmarks import their helper modules (ooxml_check, charts_util) by name.
+search-path = ["tests"]
+# openpyxl is only the independent reader the tests check results with; its
+# Optional-heavy stubs say nothing about ours.
+replace-imports-with-any = ["openpyxl", "openpyxl.*"]
+
+[tool.pyrefly.errors]
+# Tests that pass wrong types on purpose are marked `# pyrefly: ignore[...]`.
+# Reporting unused ignores means a stub that stops rejecting such a call fails
+# the check (tests/test_stubs.py).
+unused-ignore = true

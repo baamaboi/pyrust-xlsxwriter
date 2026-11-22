@@ -1,0 +1,10 @@
+# Type aliases that exist only for type checkers.
+pyrust_xlsxwriter._pyrust_xlsxwriter.ColorLike
+pyrust_xlsxwriter._pyrust_xlsxwriter.PathLike
+pyrust_xlsxwriter._pyrust_xlsxwriter.CellValue
+pyrust_xlsxwriter._pyrust_xlsxwriter.RichSegment
+pyrust_xlsxwriter._pyrust_xlsxwriter.ReadSource
+pyrust_xlsxwriter._pyrust_xlsxwriter.ReadValue
+# __all__ is computed at runtime from the extension module.
+pyrust_xlsxwriter.__all__
+pyrust_xlsxwriter._pyrust_xlsxwriter.__all__
